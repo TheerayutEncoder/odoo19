@@ -6,9 +6,6 @@ services:
       file: common.yaml
       service: odoo
     restart: unless-stopped
-    ports:
-      - "8069:8069"
-      - "8072:8072"
     env_file:
       - .docker/odoo.env
       - .docker/db-access.env
@@ -39,6 +36,21 @@ services:
       default:
         aliases:
           - "myproject-odoo-19-0-prod-db"
+
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_HOST=127.0.0.1
+      - NGINX_PORT=80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      default:
 
 networks:
   default:
