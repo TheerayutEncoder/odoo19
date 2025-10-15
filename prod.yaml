@@ -37,6 +37,21 @@ services:
         aliases:
           - "myproject-odoo-19-0-prod-db"
 
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_HOST=127.0.0.1
+      - NGINX_PORT=80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      default:
+
 networks:
   default:
     driver_opts:
